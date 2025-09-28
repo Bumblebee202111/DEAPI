@@ -1,15 +1,25 @@
-DEAPI
-======
-An EAPI decryptor for desktop
------
-This is a Kotlin Multiplatform project targeting Desktop.
+# DEAPI
 
-* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+A simple desktop utility for decrypting EAPI responses, built with Compose for Desktop.
 
+This was mostly a fun project to learn more about Kotlin Multiplatform and Compose. The code is kept simple on purpose.
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+[Screenshot](docs/screenshot.png)
+
+### Features
+
+- Decrypts standard EAPI payloads.
+- Handles newer, Gzip-compressed EAPI payloads.
+- Simple hex string input.
+- Drag & drop support for binary files.
+
+### How to Use
+
+1. Run the application.
+2. Paste the ciphertext as a hex string, or drag & drop the raw response file onto the window.
+3. Check the **"Use Gzip Decompression"** box for newer API responses (e.g., from requests with an `x-aeapi` header).
+4. Click "Decrypt".
+
+### Disclaimer
+
+This tool is provided for personal educational and research purposes only. By using this software, you agree that you are responsible for complying with the terms of service of any application you choose to analyze.

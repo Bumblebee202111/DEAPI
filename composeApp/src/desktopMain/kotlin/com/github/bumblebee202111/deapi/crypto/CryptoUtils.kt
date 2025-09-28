@@ -8,25 +8,27 @@ import javax.crypto.spec.SecretKeySpec
 
 internal object CryptoUtils {
     private const val SECRET_KEY_STRING = "e82ckenh8dichen8"
-    const val TRANSFORMATION_NAME = "AES/ECB/PKCS5Padding"
+    private const val TRANSFORMATION_NAME = "AES/ECB/PKCS5Padding"
     private val secretKeyBytes = SECRET_KEY_STRING.toByteArray()
     private val secretKeySpec = SecretKeySpec(secretKeyBytes, "AES")
 
-    fun decrypt(dataBytes: ByteArray): String {
+    /**
+     * Decrypts EAPI data.
+     * @return The raw decrypted bytes.
+     */
+    fun decrypt(dataBytes: ByteArray): ByteArray {
         return try {
             val cipher = Cipher.getInstance(TRANSFORMATION_NAME)
             cipher.init(Cipher.DECRYPT_MODE, secretKeySpec)
-            val decryptedBytes = cipher.doFinal(dataBytes)
-            String(decryptedBytes)
+            cipher.doFinal(dataBytes)
         } catch (e: Exception) {
             val message = when (e) {
-                is BadPaddingException -> "Decryption failed: Invalid padding. Check key/data/corruption."
-                is IllegalBlockSizeException -> "Decryption failed: Invalid block size. Check data length."
-                is InvalidKeyException -> "Decryption failed: Invalid key. Check key length (16, 24, or 32 bytes)."
-                else -> "Decryption failed: ${e.javaClass.simpleName} - ${e.message ?: "Unknown reason"}"
+                is BadPaddingException -> "Invalid padding. Check key/data/corruption."
+                is IllegalBlockSizeException -> "Invalid block size. Check data length."
+                is InvalidKeyException -> "Invalid key specified."
+                else -> "${e.javaClass.simpleName} - ${e.message ?: "Unknown reason"}"
             }
             throw RuntimeException("Decryption failed: $message", e)
         }
     }
 }
-
